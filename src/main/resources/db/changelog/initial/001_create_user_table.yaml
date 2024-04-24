@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Users
+      author: Argen
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(70)
+              - column:
+                  name: email
+                  type: varchar(120)
+              - column:
+                  name: about_info
+                  type: varchar(250)
+              - column:
+                  name: subscriptions
+                  type: long
+              - column:
+                  name: subscribers
+                  type: long
+              - column:
+                  name: avatar
+                  type: varchar(200)
+              - column:
+                  name: posts
+                  type: long
+              - column:
+                  name: enabled
+                  type: boolean

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create table comments
+      author: Argen
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_author_id
+                    references: users(id)
+              - column:
+                  name: post_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_post_id
+                    references: posts(id)
+              - column:
+                  name: comment
+                  type: varchar(250)
+              - column:
+                  name: time
+                  type: datetime

@@ -1,0 +1,22 @@
+server:
+  port: 8089
+
+spring:
+  datasource:
+    url: jdbc:h2:./db/demo;AUTO_SERVER=true
+    username: root
+    password: qwerty
+    driver-class-name: org.h2.Driver
+
+  mvc:
+    static-path-pattern: /static/**
+
+  liquibase:
+    change-log: classpath:/db/changelog/master.yaml
+
+logging:
+  level:
+    root: info
+
+  file:
+    name: logs/spring.log
