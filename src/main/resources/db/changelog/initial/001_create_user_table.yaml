@@ -20,6 +20,9 @@ databaseChangeLog:
                   name: email
                   type: varchar(120)
               - column:
+                  name: password
+                  type: varchar(200)
+              - column:
                   name: about_info
                   type: varchar(250)
               - column:
