@@ -14,5 +14,6 @@ public class Comment {
     private Long postId;
     private String comment;
     private LocalDateTime time;
+    private Boolean isActive;
 
 }

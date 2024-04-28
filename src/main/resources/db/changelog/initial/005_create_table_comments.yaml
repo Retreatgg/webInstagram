@@ -33,3 +33,6 @@ databaseChangeLog:
               - column:
                   name: time
                   type: datetime
+              - column:
+                  name: is_active
+                  type: boolean

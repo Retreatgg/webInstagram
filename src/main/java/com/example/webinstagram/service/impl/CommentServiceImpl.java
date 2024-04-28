@@ -26,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setAuthorId(user.getId());
         comment.setPostId(postId);
         comment.setTime(LocalDateTime.now());
+        comment.setIsActive(true);
 
         commentDao.createComment(comment);
     }

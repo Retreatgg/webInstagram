@@ -1,14 +1,13 @@
-package com.example.webinstagram.models;
+package com.example.webinstagram.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class Post {
+@Data
+@Builder
+public class PostDto {
 
     private Long id;
     private Long authorId;
@@ -17,6 +16,4 @@ public class Post {
     private String photo;
     private String info;
     private LocalDateTime timePost;
-    private Boolean isActive;
-
 }

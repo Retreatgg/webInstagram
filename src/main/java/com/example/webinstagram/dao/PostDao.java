@@ -2,15 +2,20 @@ package com.example.webinstagram.dao;
 
 import com.example.webinstagram.models.Post;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class PostDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public void createPost(Post post) {
         String sql = """
@@ -25,5 +30,15 @@ public class PostDao {
                 .addValue("photo", post.getPhoto())
                 .addValue("info", post.getInfo())
                 .addValue("time_post", post.getTimePost()));
+    }
+
+    public List<Post> getPostsByAuthorId(Long id) {
+        String sql = """
+                select * from posts
+                where author_id = ?
+                and is_active = true
+                """;
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Post.class), id);
     }
 }

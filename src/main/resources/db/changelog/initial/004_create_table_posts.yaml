@@ -35,3 +35,6 @@ databaseChangeLog:
               - column:
                   name: time_post
                   type: datetime
+              - column:
+                  name: is_active
+                  type: boolean
