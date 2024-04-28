@@ -13,4 +13,8 @@ public interface PostService {
 
     void createPost(Authentication authentication,  PostCreateDto postCreateDto);
     List<PostDto> getPostsByAuthorId(Long id);
+
+    PostDto getPostById(Long id);
+
+    void delete(Authentication auth, Long postId);
 }

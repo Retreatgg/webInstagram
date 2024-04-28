@@ -7,20 +7,26 @@ import com.example.webinstagram.models.Post;
 import com.example.webinstagram.models.User;
 import com.example.webinstagram.service.PostService;
 import com.example.webinstagram.util.FileUtil;
+import com.example.webinstagram.util.UserUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostDao postDao;
     private final FileUtil fileUtil;
+    private final UserUtil userUtil;
 
 
     @Override
@@ -47,6 +53,41 @@ public class PostServiceImpl implements PostService {
         List<PostDto> postDtos = new ArrayList<>();
 
         return postsToDto(posts, postDtos);
+    }
+
+    @Override
+    public PostDto getPostById(Long id) {
+        Post post = checkOptional(id);
+
+        return PostDto.builder()
+                .timePost(post.getTimePost())
+                .photo(post.getPhoto())
+                .likes(post.getLikes())
+                .id(post.getId())
+                .comments(post.getComments())
+                .authorId(post.getId())
+                .build();
+    }
+
+    @Override
+    public void delete(Authentication auth, Long postId) {
+        User user = userUtil.getUserByAuth(auth);
+        PostDto post = getPostById(postId);
+
+        if(user.getId() == post.getAuthorId()) {
+            postDao.delete(postId);
+        }
+    }
+
+    private Post checkOptional(Long id) {
+        Optional<Post> post = postDao.getPostById(id);
+        if(!post.isPresent()) {
+            String error = "Post is not found by ID: " + id;
+            log.error(error);
+            throw new NoSuchElementException(error);
+        }
+
+        return post.get();
     }
 
     private List<PostDto> postsToDto(List<Post> posts, List<PostDto> postDtos) {

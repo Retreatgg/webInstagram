@@ -2,6 +2,7 @@ package com.example.webinstagram.dao;
 
 import com.example.webinstagram.models.Comment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class CommentDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public void createComment(Comment comment) {
         String sql = """
@@ -23,5 +25,14 @@ public class CommentDao {
                 .addValue("post_id", comment.getPostId())
                 .addValue("comment", comment.getComment())
                 .addValue("time", comment.getTime()));
+    }
+
+    public void delete(Long commentId) {
+        String sql = """
+                update comments set is_active = false 
+                where id = ?
+                """;
+
+        jdbcTemplate.update(sql, commentId);
     }
 }
