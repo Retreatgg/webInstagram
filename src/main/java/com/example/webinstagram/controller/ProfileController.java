@@ -23,9 +23,7 @@ public class ProfileController {
 
     @GetMapping("")
     public String profile(Authentication auth, Model model) {
-        User user = userUtil.getUserByAuth(auth);
-        model.addAttribute("user", user);
-        model.addAttribute("posts", postService.getPostsByAuthorId(user.getId()));
+
 
         return "profile/profile";
     }

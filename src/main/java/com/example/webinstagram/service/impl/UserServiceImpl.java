@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
         return UserDto.builder()
                 .posts(user.getPosts())
                 .name(user.getName())
+                .username(user.getUsername())
                 .aboutInfo(user.getAboutInfo())
                 .subscribes(user.getSubscribes())
                 .subscriptions(user.getSubscriptions())
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
         user.setAboutInfo(userDto.getAboutInfo());
         user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
         user.setEnabled(true);
         user.setEmail(userDto.getEmail());
         user.setPosts(0L);

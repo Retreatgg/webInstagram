@@ -16,15 +16,16 @@ public class CommentDao {
 
     public void createComment(Comment comment) {
         String sql = """
-                insert into COMMENTS(author_id, post_id, comment, time) 
-                VALUES ( :author_id, :post_id, :comment, :time )
+                insert into COMMENTS(author_id, post_id, comment, time, IS_ACTIVE) 
+                VALUES ( :author_id, :post_id, :comment, :time, :is_active )
                 """;
 
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
                 .addValue("author_id", comment.getAuthorId())
                 .addValue("post_id", comment.getPostId())
                 .addValue("comment", comment.getComment())
-                .addValue("time", comment.getTime()));
+                .addValue("time", comment.getTime())
+                .addValue("is_active", comment.getIsActive()));
     }
 
     public void delete(Long commentId) {
@@ -34,5 +35,14 @@ public class CommentDao {
                 """;
 
         jdbcTemplate.update(sql, commentId);
+    }
+
+    public void deleteCommentsByPostId(Long postId) {
+        String sql = """
+                update comments set is_active = false
+                where post_id = ?
+                """;
+
+        jdbcTemplate.update(sql, postId);
     }
 }

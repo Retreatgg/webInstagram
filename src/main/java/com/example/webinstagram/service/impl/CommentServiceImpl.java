@@ -46,4 +46,9 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    public void deleteCommentsByPostId(Long postId) {
+        commentDao.deleteCommentsByPostId(postId);
+    }
+
 }

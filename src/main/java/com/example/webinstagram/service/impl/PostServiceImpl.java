@@ -5,6 +5,7 @@ import com.example.webinstagram.dto.PostCreateDto;
 import com.example.webinstagram.dto.PostDto;
 import com.example.webinstagram.models.Post;
 import com.example.webinstagram.models.User;
+import com.example.webinstagram.service.CommentService;
 import com.example.webinstagram.service.PostService;
 import com.example.webinstagram.util.FileUtil;
 import com.example.webinstagram.util.UserUtil;
@@ -27,6 +28,7 @@ public class PostServiceImpl implements PostService {
     private final PostDao postDao;
     private final FileUtil fileUtil;
     private final UserUtil userUtil;
+    // private final CommentService commentService;
 
 
     @Override
@@ -76,6 +78,7 @@ public class PostServiceImpl implements PostService {
 
         if(user.getId() == post.getAuthorId()) {
             postDao.delete(postId);
+            // commentService.deleteCommentsByPostId(postId);
         }
     }
 

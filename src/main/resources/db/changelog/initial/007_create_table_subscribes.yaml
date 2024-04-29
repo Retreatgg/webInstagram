@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create table subscribes
+      author: Argen
+      changes:
+        - createTable:
+            tableName: subscribes
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: subscription_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_subscription
+                    references: users(id)
+              - column:
+                  name: subscriber_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_subscriber
+                    references: users(id)
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: time
+                  type: datetime

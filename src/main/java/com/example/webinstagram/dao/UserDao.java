@@ -20,12 +20,13 @@ public class UserDao {
 
     public void registerUser(User user) {
         String sql = """
-                insert into users(name, email, password, about_info, subscriptions, subscribers, avatar, posts, enabled) 
-                VALUES ( :name , :email, :password, :about_info, :subscriptions, :subscribes, :avatar, :posts, :enabled)
+                insert into users(name, username, email, password, about_info, subscriptions, subscribers, avatar, posts, enabled) 
+                VALUES ( :name, :username, :email, :password, :about_info, :subscriptions, :subscribes, :avatar, :posts, :enabled)
                 """;
 
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
                 .addValue("name", user.getName())
+                .addValue("username", user.getUsername())
                 .addValue("email", user.getEmail())
                 .addValue("password", user.getPassword())
                 .addValue("about_info", user.getAboutInfo())

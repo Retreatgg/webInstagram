@@ -21,8 +21,8 @@ public class PostDao {
 
     public void createPost(Post post) {
         String sql = """
-                insert into posts(author_id, comments, likes, photo, info, time_post)
-                VALUES ( :author_id, :comments, :likes, :photo, :info, :time_post)
+                insert into posts(author_id, comments, likes, photo, info, time_post, IS_ACTIVE)
+                VALUES ( :author_id, :comments, :likes, :photo, :info, :time_post, :is_active)
                 """;
 
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
@@ -31,7 +31,8 @@ public class PostDao {
                 .addValue("likes", post.getLikes())
                 .addValue("photo", post.getPhoto())
                 .addValue("info", post.getInfo())
-                .addValue("time_post", post.getTimePost()));
+                .addValue("time_post", post.getTimePost())
+                .addValue("is_active", post.getIsActive()));
     }
 
     public List<Post> getPostsByAuthorId(Long id) {

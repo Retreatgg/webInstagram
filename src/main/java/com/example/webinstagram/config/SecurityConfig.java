@@ -57,8 +57,7 @@ public class SecurityConfig {
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("profile/**").hasAuthority("1")
-                        .requestMatchers("file/**").hasAuthority("1")
+                        //.requestMatchers("profile/**").hasAuthority("1")
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(Customizer.withDefaults())

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserCreateDto {
 
     private String name;
+    private String username;
     private String email;
     private String password;
     private String aboutInfo;
