@@ -5,8 +5,10 @@ import com.example.webinstagram.dto.UserCreateDto;
 import com.example.webinstagram.dto.UserDto;
 import com.example.webinstagram.models.User;
 import com.example.webinstagram.service.UserService;
+import com.example.webinstagram.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final FileUtil fileUtil;
 
     @Override
     public void registerUser(UserCreateDto user) {
@@ -38,6 +41,20 @@ public class UserServiceImpl implements UserService {
                 .subscriptions(user.getSubscriptions())
                 .email(user.getEmail())
                 .build();
+    }
+
+    @Override
+    public ResponseEntity<?> downloadImage(String email) {
+        UserDto userDto = getUserByEmail(email);
+        String file = userDto.getAvatar();
+        Optional<User> userOptional = userDao.getUserByEmail(email);
+        if(userOptional.isPresent()) {
+            User user = userOptional.get();
+            String avatar = user.getAvatar();
+            return fileUtil.getOutputFile(avatar, "/images");
+        }
+
+        return null;
     }
 
     private User transformUser(UserCreateDto userDto) {

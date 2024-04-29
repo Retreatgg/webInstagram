@@ -1,5 +1,6 @@
 package com.example.webinstagram.service.impl;
 
+import com.example.webinstagram.dao.CommentDao;
 import com.example.webinstagram.dao.PostDao;
 import com.example.webinstagram.dto.PostCreateDto;
 import com.example.webinstagram.dto.PostDto;
@@ -28,7 +29,7 @@ public class PostServiceImpl implements PostService {
     private final PostDao postDao;
     private final FileUtil fileUtil;
     private final UserUtil userUtil;
-    // private final CommentService commentService;
+    private final CommentDao commentDao;
 
 
     @Override
@@ -78,9 +79,18 @@ public class PostServiceImpl implements PostService {
 
         if(user.getId() == post.getAuthorId()) {
             postDao.delete(postId);
-            // commentService.deleteCommentsByPostId(postId);
+            commentDao.deleteCommentsByPostId(postId);
         }
     }
+
+    @Override
+    public void like(Long id) {
+        Post post = checkOptional(id);
+        Long likes = post.getLikes();
+        post.setLikes(likes + 1);
+        postDao.updatePostById(post, id);
+    }
+
 
     private Post checkOptional(Long id) {
         Optional<Post> post = postDao.getPostById(id);

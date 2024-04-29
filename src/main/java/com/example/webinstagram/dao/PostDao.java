@@ -66,4 +66,13 @@ public class PostDao {
 
         jdbcTemplate.update(sql, postId);
     }
+
+    public void updatePostById(Post post, Long id) {
+        String sql = """
+                update posts set likes = ?
+                where id = ?
+                """;
+
+        jdbcTemplate.update(sql, post.getLikes(), id);
+    }
 }

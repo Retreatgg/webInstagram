@@ -32,7 +32,7 @@ databaseChangeLog:
                   name: subscriptions
                   type: long
               - column:
-                  name: subscribers
+                  name: subscribes
                   type: long
               - column:
                   name: avatar

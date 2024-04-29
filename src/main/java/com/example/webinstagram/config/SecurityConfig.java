@@ -24,20 +24,18 @@ public class SecurityConfig {
     private final DataSource dataSource;
 
     private static final String USER_QUERY = "select email, password, enabled from users where email = ?;";
-    private static final String AUTHORITIES_QUERY = """
-            SELECT u.id, a.id
-            FROM users u
-                     INNER JOIN user_role ur ON u.id = ur.user_id
-                     INNER JOIN authorities a ON ur.role_id = a.id
-            WHERE u.email = ?;
-            """;
+    private static final String AUTHORITY_QUERY = "SELECT u.email, r.AUTHORITY\n" +
+            "FROM USER_AUTHORITY ur\n" +
+            "         JOIN users u ON ur.USER_ID = u.id\n" +
+            "         JOIN AUTHORITIES r ON ur.AUTHORITY_ID = r.id\n" +
+            "WHERE u.email = ?;";
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(USER_QUERY)
-                .authoritiesByUsernameQuery(AUTHORITIES_QUERY)
+                .authoritiesByUsernameQuery(AUTHORITY_QUERY)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
@@ -57,7 +55,7 @@ public class SecurityConfig {
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        //.requestMatchers("profile/**").hasAuthority("1")
+                        .requestMatchers("profile/**").hasAuthority("USER")
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(Customizer.withDefaults())

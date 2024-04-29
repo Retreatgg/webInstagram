@@ -17,4 +17,6 @@ public interface PostService {
     PostDto getPostById(Long id);
 
     void delete(Authentication auth, Long postId);
+
+    void like(Long id);
 }
