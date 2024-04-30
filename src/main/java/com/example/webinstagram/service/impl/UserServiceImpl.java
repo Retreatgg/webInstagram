@@ -32,6 +32,10 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByEmail(String email) {
         User user = userOptionalCheck(email);
 
+        return transformUserToDto(user);
+    }
+
+    private UserDto transformUserToDto(User user) {
         return UserDto.builder()
                 .posts(user.getPosts())
                 .name(user.getName())
@@ -42,7 +46,6 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .build();
     }
-
     @Override
     public ResponseEntity<?> downloadImage(String email) {
         UserDto userDto = getUserByEmail(email);
@@ -55,6 +58,18 @@ public class UserServiceImpl implements UserService {
         }
 
         return null;
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        Optional<User> user = userDao.getUserById(id);
+        if(user.isPresent()) {
+            return transformUserToDto(user.get());
+        }
+
+        String error = "User is not found";
+        log.error(error);
+        throw new NoSuchElementException(error);
     }
 
     private User transformUser(UserCreateDto userDto) {

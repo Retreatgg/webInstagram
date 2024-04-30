@@ -75,4 +75,16 @@ public class PostDao {
 
         jdbcTemplate.update(sql, post.getLikes(), id);
     }
+
+    public List<Post> getPostsBySubscriberId(Long id) {
+        String sql = """
+                SELECT p.*
+                FROM subscribes s
+                JOIN users u ON s.subscription_id = u.id
+                JOIN posts p ON u.id = p.author_id
+                WHERE s.subscriber_id = ?     
+                """;
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Post.class), id);
+    }
 }

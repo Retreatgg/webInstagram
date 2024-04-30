@@ -2,10 +2,13 @@ package com.example.webinstagram.dao;
 
 import com.example.webinstagram.models.Comment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -44,5 +47,16 @@ public class CommentDao {
                 """;
 
         jdbcTemplate.update(sql, postId);
+    }
+
+    public List<Comment> getCommentsByPostId(Long id) {
+        String sql = """
+                select * from comments 
+                where post_id = ?
+                and is_active = true
+                order by TIME
+                """;
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Comment.class), id);
     }
 }

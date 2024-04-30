@@ -47,6 +47,21 @@ public class UserDao {
                 DataAccessUtils.singleResult(
                         jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), email)
                 )
+       );
+    }
+
+
+    public Optional<User> getUserById(Long id) {
+        String sql = """
+                select * from users
+                where id like ?
+                """;
+
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), id)
+                )
         );
     }
+
 }

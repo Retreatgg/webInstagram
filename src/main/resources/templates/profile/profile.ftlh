@@ -82,10 +82,9 @@
                         </p>
 
                     </div>
-                    <div class="add-comment">
-                        <p>Add a comment...</p>
-                        <i class="fa-solid fa-face-smile"></i>
-                    </div>
+                    <button id="comment-btn" class="add-comment-button">
+                        <i class="fa-solid fa-face-smile"></i> Add a comment...
+                    </button>
                 </div>
 
             <script>
@@ -98,6 +97,12 @@
 
                 function deletePost() {
                     fetch(`/delete/${post.id}`)
+                }
+
+                let com = document.getElementById('comment-btn').addEventListener('click', comment)
+
+                function comment() {
+                    fetch('/comment/${post.id}')
                 }
             </script>
         </#list>

@@ -2,12 +2,15 @@ package com.example.webinstagram.service.impl;
 
 import com.example.webinstagram.dao.CommentDao;
 import com.example.webinstagram.dao.PostDao;
+import com.example.webinstagram.dao.UserDao;
 import com.example.webinstagram.dto.PostCreateDto;
 import com.example.webinstagram.dto.PostDto;
+import com.example.webinstagram.dto.PostMainDto;
 import com.example.webinstagram.models.Post;
 import com.example.webinstagram.models.User;
 import com.example.webinstagram.service.CommentService;
 import com.example.webinstagram.service.PostService;
+import com.example.webinstagram.service.UserService;
 import com.example.webinstagram.util.FileUtil;
 import com.example.webinstagram.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,8 @@ public class PostServiceImpl implements PostService {
     private final FileUtil fileUtil;
     private final UserUtil userUtil;
     private final CommentDao commentDao;
+    private final UserDao userDao;
+    private final UserService userService;
 
 
     @Override
@@ -89,6 +94,26 @@ public class PostServiceImpl implements PostService {
         Long likes = post.getLikes();
         post.setLikes(likes + 1);
         postDao.updatePostById(post, id);
+    }
+
+    @Override
+    public List<PostMainDto> getPostsBySubscriberId(Long id) {
+        List<Post> posts = postDao.getPostsBySubscriberId(id);
+        List<PostMainDto> dtos = new ArrayList<>();
+
+        for(var post: posts) {
+            dtos.add(PostMainDto.builder()
+                            .timePost(post.getTimePost())
+                            .likes(post.getLikes())
+                            .photo(post.getPhoto())
+                            .info(post.getInfo())
+                            .comments(post.getComments())
+                            .id(post.getId())
+                            .author(userService.getUserById(post.getAuthorId()))
+                    .build());
+        }
+
+        return dtos;
     }
 
 

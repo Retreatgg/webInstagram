@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("profile/**").hasAuthority("USER")
+                        .requestMatchers("/**").hasAuthority("USER")
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(Customizer.withDefaults())
