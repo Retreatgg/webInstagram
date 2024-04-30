@@ -6,6 +6,7 @@ import com.example.webinstagram.dto.UserDto;
 import com.example.webinstagram.models.Post;
 import com.example.webinstagram.models.User;
 import com.example.webinstagram.service.PostService;
+import com.example.webinstagram.service.SubscribeService;
 import com.example.webinstagram.service.UserService;
 import com.example.webinstagram.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class ProfileController {
     private final UserService userService;
     private final PostService postService;
     private final UserUtil userUtil;
+    private final SubscribeService subscribeService;
 
     @GetMapping("")
     public String profile(Authentication auth, Model model) {
@@ -58,5 +61,13 @@ public class ProfileController {
 
 
         return "profile/profile";
+    }
+
+
+    @PostMapping("subscribe/{id}")
+    public String subscribe(Authentication auth, @PathVariable Long id) {
+        User user = userUtil.getUserByAuth(auth);
+        subscribeService.subscribe(user.getId(), id);
+        return "redirect:/";
     }
 }

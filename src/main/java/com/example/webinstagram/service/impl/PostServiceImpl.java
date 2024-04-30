@@ -54,6 +54,10 @@ public class PostServiceImpl implements PostService {
         post.setIsActive(true);
 
         postDao.createPost(post);
+
+        user.setPosts(user.getPosts() + 1);
+
+        userService.update(user);
     }
 
     @Override
@@ -74,7 +78,7 @@ public class PostServiceImpl implements PostService {
                 .likes(post.getLikes())
                 .id(post.getId())
                 .comments(post.getComments())
-                .authorId(post.getId())
+                .authorId(post.getAuthorId())
                 .build();
     }
 

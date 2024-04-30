@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,15 +36,14 @@ public class PostController {
         return "posts/main";
     }
 
-    @GetMapping("like/{id}")
+    @GetMapping("post/like/{id}")
     public String like(Authentication authentication, @PathVariable Long id) {
         User user = userUtil.getUserByAuth(authentication);
         likeService.like(id, user.getId());
-        postService.like(id);
         return "redirect:/profile";
     }
 
-    @GetMapping("delete/{id}")
+    @PostMapping("post/delete/{id}")
     public String delete(Authentication authentication, @PathVariable Long id) {
         postService.delete(authentication, id);
         return "redirect:/profile";
@@ -57,11 +53,14 @@ public class PostController {
     public String comments(Authentication auth, @PathVariable Long id, Model model) {
         User user = userUtil.getUserByAuth(auth);
         List<CommentDto> commentDtos = commentService.getCommentsByPostId(id);
+
         if(!commentDtos.isEmpty()) {
             if(user.getId() == commentDtos.get(0).getPost().getAuthorId()) {
                 model.addAttribute("user", user);
             }
         }
+
+        model.addAttribute("postId", id);
         model.addAttribute("comments",commentDtos);
 
         return "comment/comments";
@@ -73,6 +72,12 @@ public class PostController {
         System.out.println(comment.getComment());
 
         return "redirect:/comment/" + id;
+    }
+
+    @PostMapping("delete/comment/{id}")
+    public String deleteComment(@PathVariable Long id) {
+        commentService.delete(id);
+        return "redirect:/comment/" +id;
     }
 
     @GetMapping("create")

@@ -12,7 +12,7 @@ public interface CommentService {
 
     void createComment(Authentication auth, Long postId, CommentCreateDto commentCreateDto);
 
-    void delete(Authentication auth, Long postId, Long commentId);
+    void delete(Long commentId);
 
     void deleteCommentsByPostId(Long postId);
 

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class CommentDto {
 
+    private Long id;
     private UserDto author;
     private PostDto post;
     private String comment;

@@ -5,7 +5,9 @@ import com.example.webinstagram.dao.LikeDao;
 import com.example.webinstagram.dto.LikeDto;
 import com.example.webinstagram.models.Like;
 import com.example.webinstagram.service.LikeService;
+import com.example.webinstagram.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,16 +19,31 @@ import java.util.List;
 public class LikeServiceImpl implements LikeService {
 
     private final LikeDao likeDao;
+    private final PostService postService;
 
     @Override
     public void like(Long postId, Long userId) {
         Like like = new Like();
+        try {
+            Long id = likeDao.getUserIdByPost(postId);
 
-        like.setTime(LocalDateTime.now());
-        like.setUserId(userId);
-        like.setPostId(postId);
+            if(id != null && userId != id ) {
+                like.setTime(LocalDateTime.now());
+                like.setUserId(userId);
+                like.setPostId(postId);
 
-        likeDao.like(like);
+                likeDao.like(like);
+                postService.like(postId);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            like.setTime(LocalDateTime.now());
+            like.setUserId(userId);
+            like.setPostId(postId);
+
+            likeDao.like(like);
+            postService.like(postId);
+        }
+
     }
 
     @Override

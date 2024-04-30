@@ -4,9 +4,11 @@
     <#if posts??>
         <#list posts as post>
 
-
             <div class="card mt-5">
                 <img class="img-fluid" src="/images/post/download/${post.id}" alt="${post.id}">
+                <button type="button" id="btn-like" class="btn" data-post-id="${post.id}">
+                    <a href="/post/like/${post.id}">Like</a>
+                </button>
 
                 </span>
                 <div class="caption">
@@ -17,32 +19,15 @@
                     </p>
 
                 </div>
-                <button id="btn-like" class="like-button">
-                    <i class="far fa-heart fa-lg"></i>
-                </button>
-
-
-                <button id="comment-btn" class="add-comment-button">
-                    <i class="fa-solid fa-face-smile"></i> Add a comment...
+                <button id="comment-btn" class="add-comment-button" data-post-id="${post.id}">
+                    <i class="fa-solid fa-face-smile"></i> <a href="/comment/${post.id}">Add a comment...</a>
                 </button>
             </div>
 
 
-            <script>
-                let btnLike = document.getElementById('btn-like').addEventListener('click', like)
-
-                function like() {
-                    fetch(`/like/${post.id}`)
-                }
-
-
-                let com = document.getElementById('comment-btn').addEventListener('click', comment)
-
-                function comment() {
-                    fetch('/comment/${post.id}')
-                }
-            </script>
         </#list>
+
+        </div>
     </#if>
 
     <style>

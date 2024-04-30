@@ -50,13 +50,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void delete(Authentication auth, Long postId, Long commentId) {
-        User user = userUtil.getUserByAuth(auth);
-        PostDto postDto = postService.getPostById(postId);
-
-        if(user.getId() == postDto.getAuthorId()) {
-            commentDao.delete(commentId);
-        }
+    public void delete(Long commentId) {
+        commentDao.delete(commentId);
     }
 
     @Override
@@ -71,6 +66,7 @@ public class CommentServiceImpl implements CommentService {
 
         comments.forEach(com -> {
             dtos.add(CommentDto.builder()
+                            .id(com.getId())
                             .post(postService.getPostById(com.getPostId()))
                             .author(userService.getUserById(com.getAuthorId()))
                             .isActive(com.getIsActive())

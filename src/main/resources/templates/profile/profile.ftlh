@@ -47,15 +47,18 @@
                 </ul>
 
                 <#if guest??>
-                    <button class="subscribe-button">Subscribe</button>
+                    <button id="subscribe" class="subscribe-button">
+                                Subscribe</button>
+                <#else>
+                    <button class="btn"><a href="/create">Add new post</a></button>
                 </#if>
+
 
             </div>
 
             <div class="profile-bio">
 
                 <p><span class="profile-real-name">${user.name}: </span> ${user.aboutInfo}</p>
-                <button class="btn"><a href="/create">Add new post</a> </button>
             </div>
 
         </div>
@@ -72,14 +75,14 @@
 
             <div class="card mt-5">
                 <img class="img-fluid" src="/images/post/download/${post.id}" alt="${post.id}">
-                <button id="btn-like" class="like-button" data-post-id="${post.id}">
-                    <i class="far fa-heart"></i>
+                <button type="button" id="btn-like" class="btn" data-post-id="${post.id}">
+                    <a href="/post/like/${post.id}">Like</a>
                 </button>
 
                 <#if guest??>
                 <#else>
                     <button id="btn-delete" class="delete-button" data-post-id="${post.id}">
-                        <i class="far fa-trash-alt"></i>
+                        delete
                     </button>
                 </#if>
                 </span>
@@ -92,31 +95,28 @@
 
                 </div>
                 <button id="comment-btn" class="add-comment-button" data-post-id="${post.id}">
-                    <i class="fa-solid fa-face-smile"></i> Add a comment...
+                    <i class="fa-solid fa-face-smile"></i> <a href="/comment/${post.id}">Add a comment...</a>
                 </button>
             </div>
 
             <script>
-                let btnDelete = document.getElementById('btn-delete').addEventListener('click', deletePost)
-                let btnLike = document.getElementById('btn-like').addEventListener('click', like)
+                let btn = document.getElementById('btn-delete').addEventListener('click', deletePost)
 
-                function like() {
-                    const postId = this.getAttribute('data-post-id');
-                    fetch(`/like/` + postId)
+                async function deletePost() {
+                    fetch('/post/delete/${post.id}', {
+                        method: 'POST'
+                    })
                 }
 
-                function deletePost() {
-                    const postId = this.getAttribute('data-post-id');
-                    fetch(`/delete/` + postId)
-                }
+                let subscribeBtn = document.getElementById('subscribe').addEventListener('click', subscribe)
 
-                let com = document.getElementById('comment-btn').addEventListener('click', comment)
-
-                function comment() {
-                    const id = this.getAttribute('data-post-id');
-                    fetch('/comment/'+id)
+                async function subscribe() {
+                    await fetch('/profile/subscribe/${user.id}', {
+                        method: 'POST'
+                    })
                 }
             </script>
+
         </#list>
 
     </div>

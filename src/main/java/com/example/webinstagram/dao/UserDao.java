@@ -64,4 +64,13 @@ public class UserDao {
         );
     }
 
+    public void update(User user) {
+        String sql = """
+                update users 
+                set  subscriptions = ?, SUBSCRIBES = ?, DEMO.PUBLIC.USERS.POSTS = ?
+                where id = ?
+                """;
+
+        jdbcTemplate.update(sql, user.getSubscriptions(), user.getSubscribes(), user.getPosts());
+    }
 }

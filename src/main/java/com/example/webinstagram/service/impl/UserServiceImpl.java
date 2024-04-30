@@ -7,9 +7,11 @@ import com.example.webinstagram.models.User;
 import com.example.webinstagram.service.PostService;
 import com.example.webinstagram.service.UserService;
 import com.example.webinstagram.util.FileUtil;
+import com.example.webinstagram.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final FileUtil fileUtil;
     private final PasswordEncoder encoder;
+    private final UserUtil userUtil;
 
     @Override
     public void registerUser(UserCreateDto user) {
@@ -74,6 +77,12 @@ public class UserServiceImpl implements UserService {
         log.error(error);
         throw new NoSuchElementException(error);
     }
+
+    @Override
+    public void update(User user) {
+        userDao.update(user);
+    }
+
 
     private User transformUser(UserCreateDto userDto) {
         User user = new User();

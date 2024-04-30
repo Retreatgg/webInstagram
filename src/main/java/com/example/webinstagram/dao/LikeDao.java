@@ -2,6 +2,7 @@ package com.example.webinstagram.dao;
 
 import com.example.webinstagram.models.Like;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -39,7 +40,7 @@ public class LikeDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Like.class), postId);
     }
 
-    public Long getUserIdByPost(Long postId) {
+    public Long getUserIdByPost(Long postId) throws EmptyResultDataAccessException {
         String sql = """
                 select user_id from likes
                 where post_id = ?

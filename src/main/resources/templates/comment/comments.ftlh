@@ -4,18 +4,55 @@
     <h1>Comments</h1>
 
     <ul class="comments">
+
+
         <#list comments as comment>
 
+        <#if comment??>
             <li class="comment">
                 <#if user??>
-                    <button class="delete-button" style="float:right;">×</button>
+                    <button id="btn-delete" class="delete-button" style="float:right;">×</button>
                 </#if>
                 <strong>${comment.author.name}:</strong>
                 <span class="comment-text">${comment.comment}</span>
             </li>
+        </#if>
 
+            <script>
+                document.getElementById('form').addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const formData = new FormData(this);
+
+
+                    fetch('/comments/post/${postId}', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                location.reload();
+                                я
+                            } else {
+                                console.error('Error:', response.statusText);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+
+                let btnDelete = document.getElementById('btn-delete').addEventListener('click', deleteComment)
+
+                async function deleteComment() {
+                    fetch('/delete/comment/${comment.id}', {
+                        method: 'POST'
+                    })
+                }
+            </script>
 
         </#list>
+
     </ul>
 
     <form id="form" class="comment-form">
@@ -83,30 +120,5 @@
             background-color: #45a049;
         }
     </style>
-
-    <script>
-        document.getElementById('form').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const formData = new FormData(this);
-
-
-            fetch('/comments/post/${comments[0].post.id}', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                        я
-                    } else {
-                        console.error('Error:', response.statusText);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    </script>
 
 </@main.layout>

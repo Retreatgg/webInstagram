@@ -82,7 +82,8 @@ public class PostDao {
                 FROM subscribes s
                 JOIN users u ON s.subscription_id = u.id
                 JOIN posts p ON u.id = p.author_id
-                WHERE s.subscriber_id = ?     
+                WHERE s.subscriber_id = ?  
+                and p.IS_ACTIVE = true;   
                 """;
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Post.class), id);
