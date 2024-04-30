@@ -48,7 +48,7 @@
 
                 <#if guest??>
                     <button id="subscribe" class="subscribe-button">
-                                <a href="profile/subscribe/${user.if}">Subscribe</a></button>
+                                <a href="/profile/subscribe/${user.id}">Subscribe</a></button>
                 <#else>
                     <button class="btn"><a href="/create">Add new post</a></button>
                 </#if>
