@@ -14,8 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubscribeDao {
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public void subscribe(Subscribe subscribe) {
         String sql = """
