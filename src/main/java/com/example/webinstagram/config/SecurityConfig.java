@@ -56,11 +56,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("profile/**").hasAuthority("USER")
-                        .requestMatchers("/**").hasAuthority("USER")
+                        //.requestMatchers("/**").hasAuthority("USER")
+                        .requestMatchers("/auth/register").permitAll()
                         .anyRequest().permitAll()
                 )
-                .exceptionHandling(Customizer.withDefaults())
-        ;
+                .exceptionHandling(Customizer.withDefaults());
         return http.build();
 
     }

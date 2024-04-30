@@ -31,9 +31,11 @@ public class PostController {
 
     @GetMapping("")
     public String posts(Authentication auth, Model model) {
-        User user = userUtil.getUserByAuth(auth);
-        List<PostMainDto> posts = postService.getPostsBySubscriberId(user.getId());
-        model.addAttribute("posts", posts);
+        if(auth != null) {
+            User user = userUtil.getUserByAuth(auth);
+            List<PostMainDto> posts = postService.getPostsBySubscriberId(user.getId());
+            model.addAttribute("posts", posts);
+        }
         return "posts/main";
     }
 

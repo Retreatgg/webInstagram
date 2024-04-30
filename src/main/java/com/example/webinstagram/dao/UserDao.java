@@ -20,7 +20,7 @@ public class UserDao {
 
     public void registerUser(User user) {
         String sql = """
-                insert into users(name, username, email, password, about_info, subscriptions, subscribers, avatar, posts, enabled) 
+                insert into users(name, username, email, password, about_info, subscriptions, subscribes, avatar, posts, enabled) 
                 VALUES ( :name, :username, :email, :password, :about_info, :subscriptions, :subscribes, :avatar, :posts, :enabled)
                 """;
 

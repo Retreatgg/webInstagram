@@ -1,45 +1,49 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
 
-    <#list posts as post>
+    <#if posts??>
+        <#list posts as post>
 
-        <div class="card mt-5">
-            <img class="img-fluid" src="/images/post/download/${post.id}" alt="${post.id}">
 
-            </span>
-            <div class="caption">
-                <b>${post.likes} likes</b>
-                <p>
-                    <b>${post.author.name}: </b>
-                    ${post.info}
-                </p>
+            <div class="card mt-5">
+                <img class="img-fluid" src="/images/post/download/${post.id}" alt="${post.id}">
 
+                </span>
+                <div class="caption">
+                    <b>${post.likes} likes</b>
+                    <p>
+                        <b>${post.author.name}: </b>
+                        ${post.info}
+                    </p>
+
+                </div>
+                <button id="btn-like" class="like-button">
+                    <i class="far fa-heart fa-lg"></i>
+                </button>
+
+
+                <button id="comment-btn" class="add-comment-button">
+                    <i class="fa-solid fa-face-smile"></i> Add a comment...
+                </button>
             </div>
-            <button id="btn-like" class="like-button">
-                <i class="far fa-heart fa-lg"></i>
-            </button>
 
 
-            <button id="comment-btn" class="add-comment-button">
-                <i class="fa-solid fa-face-smile"></i> Add a comment...
-            </button>
-        </div>
+            <script>
+                let btnLike = document.getElementById('btn-like').addEventListener('click', like)
 
-        <script>
-            let btnLike = document.getElementById('btn-like').addEventListener('click', like)
-
-            function like() {
-                fetch(`/like/${post.id}`)
-            }
+                function like() {
+                    fetch(`/like/${post.id}`)
+                }
 
 
-            let com = document.getElementById('comment-btn').addEventListener('click', comment)
+                let com = document.getElementById('comment-btn').addEventListener('click', comment)
 
-            function comment() {
-                fetch('/comment/${post.id}')
-            }
-        </script>
-    </#list>
+                function comment() {
+                    fetch('/comment/${post.id}')
+                }
+            </script>
+        </#list>
+    </#if>
 
     <style>
         *{

@@ -27,16 +27,16 @@ public class AuthController {
     @GetMapping("register")
     public String register(Model model) {
         model.addAttribute("userDto", new UserCreateDto());
-        return "/auth/register";
+        return "register";
     }
 
     @PostMapping("register")
     public String register(@Valid UserCreateDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("userDto", userDto);
-            return "/auth/register";
+            return "register";
         }
         userService.registerUser(userDto);
-        return "redirect:/";
+        return "redirect:/auth/login";
     }
 }
