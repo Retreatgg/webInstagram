@@ -64,7 +64,7 @@ public class ProfileController {
     }
 
 
-    @PostMapping("subscribe/{id}")
+    @GetMapping("subscribe/{id}")
     public String subscribe(Authentication auth, @PathVariable Long id) {
         User user = userUtil.getUserByAuth(auth);
         subscribeService.subscribe(user.getId(), id);
