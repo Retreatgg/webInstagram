@@ -15,6 +15,7 @@ import com.example.webinstagram.util.FileUtil;
 import com.example.webinstagram.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void createPost(Authentication authentication, PostCreateDto postCreateDto) {
         Post post = new Post();
-        User user = new User();
+        User user = userUtil.getUserByAuth(authentication);
 
         String fileName = fileUtil.saveUploadedFile(postCreateDto.getPhoto(), "images");
 
@@ -116,6 +117,12 @@ public class PostServiceImpl implements PostService {
         return dtos;
     }
 
+    @Override
+    public ResponseEntity<?> downloadPostImage(Long postId) {
+        String file = postDao.getPostImage(postId);
+
+        return fileUtil.getOutputFile(file, "/images");
+    }
 
     private Post checkOptional(Long id) {
         Optional<Post> post = postDao.getPostById(id);

@@ -1,10 +1,7 @@
 package com.example.webinstagram.controller;
 
 
-import com.example.webinstagram.dto.CommentCreateDto;
-import com.example.webinstagram.dto.CommentDto;
-import com.example.webinstagram.dto.PostDto;
-import com.example.webinstagram.dto.PostMainDto;
+import com.example.webinstagram.dto.*;
 import com.example.webinstagram.models.User;
 import com.example.webinstagram.service.CommentService;
 import com.example.webinstagram.service.LikeService;
@@ -55,8 +52,14 @@ public class PostController {
     }
 
     @GetMapping("comment/{id}")
-    public String comments(@PathVariable Long id, Model model) {
+    public String comments(Authentication auth, @PathVariable Long id, Model model) {
+        User user = userUtil.getUserByAuth(auth);
         List<CommentDto> commentDtos = commentService.getCommentsByPostId(id);
+        if(!commentDtos.isEmpty()) {
+            if(user.getId() == commentDtos.get(0).getPost().getAuthorId()) {
+                model.addAttribute("user", user);
+            }
+        }
         model.addAttribute("comments",commentDtos);
 
         return "comment/comments";
@@ -68,6 +71,18 @@ public class PostController {
         System.out.println(comment.getComment());
 
         return "redirect:/comment/" + id;
+    }
+
+    @GetMapping("create")
+    public String createNewPost() {
+        return "posts/new_post";
+    }
+
+
+    @PostMapping("create")
+    public String createPost(Authentication auth, PostCreateDto postCreateDto) {
+        postService.createPost(auth, postCreateDto);
+        return "redirect:/profile";
     }
 
 }

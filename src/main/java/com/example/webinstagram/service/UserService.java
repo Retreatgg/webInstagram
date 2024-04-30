@@ -13,4 +13,5 @@ public interface UserService {
 
     ResponseEntity<?> downloadImage(String email);
     UserDto getUserById(Long id);
+
 }

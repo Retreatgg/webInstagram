@@ -4,6 +4,7 @@ import com.example.webinstagram.dao.UserDao;
 import com.example.webinstagram.dto.UserCreateDto;
 import com.example.webinstagram.dto.UserDto;
 import com.example.webinstagram.models.User;
+import com.example.webinstagram.service.PostService;
 import com.example.webinstagram.service.UserService;
 import com.example.webinstagram.util.FileUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDto transformUserToDto(User user) {
         return UserDto.builder()
+                .id(user.getId())
                 .posts(user.getPosts())
                 .name(user.getName())
                 .username(user.getUsername())
@@ -46,12 +48,11 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .build();
     }
+
     @Override
     public ResponseEntity<?> downloadImage(String email) {
-        UserDto userDto = getUserByEmail(email);
-        String file = userDto.getAvatar();
         Optional<User> userOptional = userDao.getUserByEmail(email);
-        if(userOptional.isPresent()) {
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
             String avatar = user.getAvatar();
             return fileUtil.getOutputFile(avatar, "/images");
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         Optional<User> user = userDao.getUserById(id);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             return transformUserToDto(user.get());
         }
 
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
     private User userOptionalCheck(String email) {
         Optional<User> userOptional = userDao.getUserByEmail(email);
 
-        if(!userOptional.isPresent()) {
+        if (!userOptional.isPresent()) {
             String error = "User is not found";
             log.error(error);
             throw new NoSuchElementException("User is not found");

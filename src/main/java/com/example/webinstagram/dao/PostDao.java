@@ -87,4 +87,13 @@ public class PostDao {
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Post.class), id);
     }
+
+    public String getPostImage(Long postId) {
+        String sql = """
+                select photo from posts
+                where id like ?
+                """;
+
+        return jdbcTemplate.queryForObject(sql, String.class, postId);
+    }
 }

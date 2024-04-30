@@ -4,6 +4,7 @@ package com.example.webinstagram.service;
 import com.example.webinstagram.dto.PostCreateDto;
 import com.example.webinstagram.dto.PostDto;
 import com.example.webinstagram.dto.PostMainDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,5 @@ public interface PostService {
     void like(Long id);
 
     List<PostMainDto> getPostsBySubscriberId(Long id);
+    ResponseEntity<?> downloadPostImage(Long postId);
 }

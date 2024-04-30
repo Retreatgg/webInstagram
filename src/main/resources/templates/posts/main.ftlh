@@ -4,7 +4,7 @@
     <#list posts as post>
 
         <div class="card mt-5">
-            <img class="img-fluid" src="/images/download/${post.author.email}" alt="">
+            <img class="img-fluid" src="/images/post/download/${post.id}" alt="${post.id}">
 
             </span>
             <div class="caption">

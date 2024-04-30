@@ -5,10 +5,16 @@
 
     <ul class="comments">
         <#list comments as comment>
+
             <li class="comment">
+                <#if user??>
+                    <button class="delete-button" style="float:right;">×</button>
+                </#if>
                 <strong>${comment.author.name}:</strong>
                 <span class="comment-text">${comment.comment}</span>
             </li>
+
+
         </#list>
     </ul>
 

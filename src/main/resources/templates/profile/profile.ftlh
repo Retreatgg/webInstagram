@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="George W. Park">
-    <meta name="description" content="This project demonstrates how CSS grid (with flexbox and float fallback) can be used to re-create the layout of an Instagram profile page.">
+    <meta name="description"
+          content="This project demonstrates how CSS grid (with flexbox and float fallback) can be used to re-create the layout of an Instagram profile page.">
 
     <title>Instagram Profile Layout</title>
 
@@ -26,7 +27,8 @@
 
             <div class="profile-image">
 
-                <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces" alt="">
+                <img src="/images/download/${user.email}"
+                     alt="">
 
             </div>
 
@@ -44,12 +46,16 @@
                     <li><span class="profile-stat-count">${user.subscribes}</span> following</li>
                 </ul>
 
+                <#if guest??>
+                    <button class="subscribe-button">Subscribe</button>
+                </#if>
+
             </div>
 
             <div class="profile-bio">
 
                 <p><span class="profile-real-name">${user.name}: </span> ${user.aboutInfo}</p>
-
+                <button class="btn"><a href="/create">Add new post</a> </button>
             </div>
 
         </div>
@@ -64,45 +70,51 @@
 
         <#list posts as post>
 
-                <div class="card mt-5">
-                    <img class="img-fluid" src="/images/download/${user.email}" alt="${user.avatar}">
-                    <button id="btn-like" class="like-button">
-                        <i class="far fa-heart"></i>
-                    </button>
+            <div class="card mt-5">
+                <img class="img-fluid" src="/images/post/download/${post.id}" alt="${post.id}">
+                <button id="btn-like" class="like-button" data-post-id="${post.id}">
+                    <i class="far fa-heart"></i>
+                </button>
 
-                    <button id="btn-delete" class="delete-button">
+                <#if guest??>
+                <#else>
+                    <button id="btn-delete" class="delete-button" data-post-id="${post.id}">
                         <i class="far fa-trash-alt"></i>
                     </button>
+                </#if>
                 </span>
-                    <div class="caption">
-                        <b>${post.likes} likes</b>
-                        <p>
-                            <b>${user.name}: </b>
-                            ${post.info}
-                        </p>
+                <div class="caption">
+                    <b>${post.likes} likes</b>
+                    <p>
+                        <b>${user.name}: </b>
+                        ${post.info}
+                    </p>
 
-                    </div>
-                    <button id="comment-btn" class="add-comment-button">
-                        <i class="fa-solid fa-face-smile"></i> Add a comment...
-                    </button>
                 </div>
+                <button id="comment-btn" class="add-comment-button" data-post-id="${post.id}">
+                    <i class="fa-solid fa-face-smile"></i> Add a comment...
+                </button>
+            </div>
 
             <script>
                 let btnDelete = document.getElementById('btn-delete').addEventListener('click', deletePost)
                 let btnLike = document.getElementById('btn-like').addEventListener('click', like)
 
                 function like() {
-                    fetch(`/like/${post.id}`)
+                    const postId = this.getAttribute('data-post-id');
+                    fetch(`/like/` + postId)
                 }
 
                 function deletePost() {
-                    fetch(`/delete/${post.id}`)
+                    const postId = this.getAttribute('data-post-id');
+                    fetch(`/delete/` + postId)
                 }
 
                 let com = document.getElementById('comment-btn').addEventListener('click', comment)
 
                 function comment() {
-                    fetch('/comment/${post.id}')
+                    const id = this.getAttribute('data-post-id');
+                    fetch('/comment/'+id)
                 }
             </script>
         </#list>
